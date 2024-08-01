@@ -26,7 +26,9 @@ def remove_old_backups(backup_dir, retention_days):
     print(f"削除対象のバックアップディレクトリ: {backup_dir}")
     print(f"保持する日数: {retention_days}日")
     
-    for file in os.listdir(backup_dir):
+    list = os.listdir(backup_dir)
+    list.sort()
+    for file in list:
         if file.endswith('.sql'):
             file_path = os.path.join(backup_dir, file)
             try:
