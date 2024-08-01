@@ -1,4 +1,5 @@
 retention_days: 14
+# output_directory: "/path/to/custom/backup/directory"
 databases:
   - host: "127.0.0.1"
     database: "db1"

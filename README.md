@@ -7,6 +7,7 @@
 - 複数のデータベースを指定してバックアップ
 - バックアップファイルの保存期間の設定
 - 古いバックアップファイルの自動削除
+- カスタム出力ディレクトリの指定（オプション）
 
 ## 必要条件
 
@@ -24,17 +25,33 @@
    pip install pyyaml
    ```
 
-3. `config.yaml.example`を`config.yaml`にコピーし、必要な情報を入力します：
+3. `config.yaml.example`を`config.yaml`にコピーし、必要な情報を入力します。
 
-   ```yaml
-   retention_days: 14
-   databases:
-     - host: "localhost"
-       database: "db_name"
-       user: "db_user"
-       password: "db_password"
-     # 必要に応じて他のデータベースを追加
-   ```
+## 設定
+
+`config.yaml`ファイルで以下の設定が可能です：
+
+- `retention_days`: バックアップファイルを保持する日数
+- `output_directory`: バックアップファイルの保存先ディレクトリ（オプション）
+  - 指定しない場合、スクリプトが存在するディレクトリ以下の`backup`ディレクトリが使用されます
+- `databases`: バックアップ対象のデータベース情報（複数指定可能）
+
+設定例：
+
+  ```yaml
+  retention_days: 14
+  output_directory: "/path/to/custom/backup/directory"
+  databases:
+    - host: "127.0.0.1"
+      database: "db1"
+      user: "user1"
+      password: "password1"
+    - host: "remote_host"
+      database: "db2"
+      user: "user2"
+      password: "password2"
+    # 必要に応じて他のデータベースを追加
+  ```
 
 ## 使用方法
 
@@ -44,7 +61,7 @@
    python backup.py
    ```
 
-2. バックアップファイルは`backup/ホスト名/データベース名/`ディレクトリに`YYYY-MM-DD.sql`の形式で保存されます。
+2. バックアップファイルは`output_directory`で指定されたディレクトリ（未指定の場合は`backup/ホスト名/データベース名/`）に`YYYY-MM-DD.sql`の形式で保存されます。
 
 3. 指定した保持期間を超えた古いバックアップファイルは自動的に削除されます。
 
@@ -58,10 +75,6 @@ cronを使用して毎日自動実行するには、以下のようなcron job�
 
 これにより、毎日午前1時にバックアップスクリプトが実行されます。
 
-## 注意事項
-
-- このスクリプトはMySQLデータベースを想定しています。他のデータベース系を使用している場合は、`backup_database`関数内のコマンドを適切に変更する必要があります。
-
 ## トラブルシューティング
 
 スクリプトが正しく動作しない場合は、以下を確認してください：
@@ -72,3 +85,7 @@ cronを使用して毎日自動実行するには、以下のようなcron job�
 4. バックアップディレクトリに書き込み権限があるか
 
 問題が解決しない場合は、スクリプトの出力ログを確認し、エラーメッセージを参照してください。
+
+## ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。詳細については、`LICENSE`ファイルを参照してください。

@@ -40,7 +40,10 @@ def remove_old_backups(backup_dir, retention_days):
 
 def main():
     config = load_config()
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # config.yamlで指定されたoutput_directoryを使用するか、デフォルトのディレクトリを使用
+    base_dir = config.get('output_directory', script_dir)
     
     for db in config['databases']:
         backup_dir = create_backup_directory(base_dir, db['host'], db['database'])
