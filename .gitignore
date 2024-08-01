@@ -1,0 +1,3 @@
+config.yaml
+backup/*
+!backup/.gitkeep

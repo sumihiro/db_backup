@@ -1,0 +1,10 @@
+retention_days: 14
+databases:
+  - host: "127.0.0.1"
+    database: "db1"
+    user: "user1"
+    password: "password1"
+  - host: "remote_host"
+    database: "db2"
+     user: "user2"
+    password: "password2"
