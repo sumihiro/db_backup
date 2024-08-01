@@ -86,6 +86,62 @@ cronを使用して毎日自動実行するには、以下のようなcron job�
 
 問題が解決しない場合は、スクリプトの出力ログを確認し、エラーメッセージを参照してください。
 
+## `pip` が使えない環境での実行方法
+
+レンタルサーバなど、root権限がない場合や `pip` が使用できない場合は、以下の手順で依存パッケージをインストールし、スクリプトを実行することが可能です。
+
+1. ユーザーのホームディレクトリにPythonのライブラリを保存するディレクトリを作成します：
+
+```
+mkdir -p ~/python_libs
+```
+
+2. PyYAMLのソースコードをダウンロードします：
+
+```
+cd ~/python_libs
+wget https://pypi.org/packages/source/P/PyYAML/PyYAML-6.0.tar.gz
+tar -xzvf PyYAML-6.0.tar.gz
+cd PyYAML-6.0
+```
+
+3. セットアップスクリプトを実行して、ユーザーのホームディレクトリにインストールします：
+
+```
+python3 setup.py install --user
+```
+
+4. PYTHONPATHを設定して、Pythonがこのライブラリを見つけられるようにします。~/.bashrcや~/.bash_profileに以下の行を追加します：
+
+```
+export PYTHONPATH=$HOME/.local/lib/python3.x/site-packages:$PYTHONPATH
+```
+
+（python3.xの部分は、使用しているPythonのバージョンに合わせて変更してください）
+
+5. 設定を反映させるため、シェルを再起動するか、以下のコマンドを実行します：
+
+```
+source ~/.bashrc  # または ~/.bash_profile
+```
+
+さらに、cronを使用して実行する場合は、以下の方法を試してみてください：
+
+1. `cron_backup.sh` を開き、それぞれのパスを使用している環境に合わせて修正します：
+
+```
+#!/bin/bash
+export PYTHONPATH=$HOME/.local/lib/python3.x/site-packages:$PYTHONPATH
+/usr/bin/python3 /path/to/your/backup.py
+```
+
+2. `crontab` ではこのシェルスクリプトを実行するように設定します：
+
+```
+0 1 * * * /path/to/cron_backup.sh
+```
+
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細については、`LICENSE`ファイルを参照してください。
