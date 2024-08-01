@@ -3,8 +3,9 @@ import os
 import subprocess
 from datetime import datetime, timedelta
 
-def load_config():
-    with open('config.yaml', 'r') as file:
+def load_config(script_dir):
+    config_path = os.path.join(script_dir, 'config.yaml')
+    with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
 def create_backup_directory(base_dir, host, database):
@@ -39,8 +40,8 @@ def remove_old_backups(backup_dir, retention_days):
                 print(f"無効なファイル名形式: {file}")
 
 def main():
-    config = load_config()
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    config = load_config(script_dir)
     
     # config.yamlで指定されたoutput_directoryを使用するか、デフォルトのディレクトリを使用
     base_dir = config.get('output_directory', script_dir)
