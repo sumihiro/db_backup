@@ -122,7 +122,7 @@ cd PyYAML-6.0
 python3 setup.py install --user
 ```
 
-4. PYTHONPATHを設定して、Pythonがこのライブラリを見つけられるようにします。~/.bashrcや~/.bash_profileに以下の行を追加します：
+4. PYTHONPATHを設定して、Pythonがこのライブラリを見つけられるようにします。 `~/.bashrc` や `~/.bash_profile` に以下の行を追加します：
 
 ```
 export PYTHONPATH=$HOME/.local/lib/python3.x/site-packages:$PYTHONPATH
